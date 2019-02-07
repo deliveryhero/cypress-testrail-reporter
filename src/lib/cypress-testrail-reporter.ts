@@ -21,9 +21,9 @@ export class CypressTestRailReporter extends reporters.Spec {
     this.validate(reporterOptions, 'suiteId');
 
     runner.on('start', () => {
-      const executionDateTime = moment().format('MMM Do YYYY, HH:mm (Z)');
-      const name = `${reporterOptions.runName || 'Automated test run'} ${executionDateTime}`;
-      const description = 'For the Cypress run visit https://dashboard.cypress.io/#/projects/runs';
+      const executionDateTime = moment().format('YYYY-MM-DD, HH:mm (Z)');
+      const name = `${executionDateTime} ${'Automated UI E2E Checks'}`;
+      const description = `Travis Build Number: ${process.env.TRAVIS_BUILD_NUMBER}`;
       this.testRail.createRun(name, description);
     });
 

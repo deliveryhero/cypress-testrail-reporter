@@ -40,6 +40,17 @@ var TestRail = /** @class */ (function () {
             },
         }).catch(function (error) { return console.error(error); });
     };
+    TestRail.prototype.closeRun = function () {
+        axios({
+            method: 'post',
+            url: this.base + "/close_run/" + this.runId,
+            headers: { 'Content-Type': 'application/json' },
+            auth: {
+                username: this.options.username,
+                password: this.options.password,
+            },
+        }).catch(function (error) { return console.error(error); });
+    };
     TestRail.prototype.publishResults = function (results) {
         var _this = this;
         axios({
@@ -55,6 +66,7 @@ var TestRail = /** @class */ (function () {
             .then(function (response) {
             console.log('\n', chalk.magenta.underline.bold('(TestRail Reporter)'));
             console.log('\n', " - Results are published to " + chalk.magenta("https://" + _this.options.domain + "/index.php?/runs/view/" + _this.runId), '\n');
+            _this.closeRun();
         })
             .catch(function (error) { return console.error(error); });
     };
