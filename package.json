@@ -28,7 +28,8 @@
   "scripts": {
     "tsc": "tsc",
     "clean": "rimraf dist",
-    "build": "npm run clean && npm run tsc"
+    "build": "yarn run clean && yarn run tsc",
+    "deploy": "yarn run build && yarn publish"
   },
   "dependencies": {
     "axios": "^0.18.0",
