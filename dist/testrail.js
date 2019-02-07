@@ -21,6 +21,7 @@ var TestRail = /** @class */ (function () {
                 suite_id: this.options.suiteId,
                 name: name,
                 description: description,
+                milestone_id: this.options.milestoneId,
                 include_all: true,
             }),
         })

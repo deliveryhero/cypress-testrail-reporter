@@ -23,6 +23,7 @@ export class TestRail {
         suite_id: this.options.suiteId,
         name,
         description,
+        milestone_id: this.options.milestoneId,
         include_all: true,
       }),
     })

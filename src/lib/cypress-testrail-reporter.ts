@@ -18,6 +18,7 @@ export class CypressTestRailReporter extends reporters.Spec {
     this.validate(reporterOptions, 'username');
     this.validate(reporterOptions, 'password');
     this.validate(reporterOptions, 'projectId');
+    this.validate(reporterOptions, 'milestoneId');
     this.validate(reporterOptions, 'suiteId');
 
     runner.on('start', () => {
