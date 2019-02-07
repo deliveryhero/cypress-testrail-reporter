@@ -29,12 +29,13 @@ var CypressTestRailReporter = /** @class */ (function (_super) {
         _this.validate(reporterOptions, 'projectId');
         _this.validate(reporterOptions, 'suiteId');
         runner.on('start', function () {
-            var executionDateTime = moment().format('MMM Do YYYY, HH:mm (Z)');
-            var name = (reporterOptions.runName || 'Automated test run') + " " + executionDateTime;
-            var description = 'For the Cypress run visit https://dashboard.cypress.io/#/projects/runs';
+            var executionDateTime = moment().format('YYYY-MM-DD, HH:mm (Z)');
+            var name = executionDateTime + " " + 'Automated UI E2E Checks';
+            var description = "Travis Build Number: " + process.env.TRAVIS_BUILD_NUMBER;
             _this.testRail.createRun(name, description);
         });
         runner.on('pass', function (test) {
+            var _a;
             var caseIds = shared_1.titleToCaseIds(test.title);
             if (caseIds.length > 0) {
                 var results = caseIds.map(function (caseId) {
@@ -46,9 +47,9 @@ var CypressTestRailReporter = /** @class */ (function (_super) {
                 });
                 (_a = _this.results).push.apply(_a, results);
             }
-            var _a;
         });
         runner.on('fail', function (test) {
+            var _a;
             var caseIds = shared_1.titleToCaseIds(test.title);
             if (caseIds.length > 0) {
                 var results = caseIds.map(function (caseId) {
@@ -60,7 +61,6 @@ var CypressTestRailReporter = /** @class */ (function (_super) {
                 });
                 (_a = _this.results).push.apply(_a, results);
             }
-            var _a;
         });
         runner.on('end', function () {
             if (_this.results.length == 0) {
