@@ -3,6 +3,7 @@ export interface TestRailOptions {
   username: string;
   password: string;
   projectId: number;
+  milestoneId: number;
   suiteId: number;
   assignedToId?: number;
 }
