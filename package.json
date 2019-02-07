@@ -4,7 +4,11 @@
   "description": "A Testrail reporter for cypress including TestRail API basic library",
   "main": "index.js",
   "private": false,
-  "keywords": ["cypress", "testrail", "reporter"],
+  "keywords": [
+    "cypress",
+    "testrail",
+    "reporter"
+  ],
   "author": {
     "name": "Milutin Savovic",
     "email": "mickosavovic@gmail.com"
@@ -27,7 +31,7 @@
     "axios": "^0.18.0",
     "btoa": "^1.1.2",
     "chalk": "^2.4.1",
-    "mocha": "^2.2.5",
+    "mocha": "^5.2.0",
     "moment": "^2.22.1"
   },
   "devDependencies": {
