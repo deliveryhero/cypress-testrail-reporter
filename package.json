@@ -1,6 +1,6 @@
 {
   "name": "@logistics/cypress-testrail-reporter",
-  "version": "1.1.0",
+  "version": "1.2.3",
   "description": "A Testrail reporter for cypress including TestRail API basic library",
   "main": "index.js",
   "private": false,
@@ -23,8 +23,8 @@
     "url": "https://github.com/Vivify-Ideas/cypress-testrail-reporter/issues"
   },
   "publishConfig": {
-   "registry": "https://nexus.usehurrier.com/repository/logistics-npm-private/"
- },
+    "registry": "https://nexus.usehurrier.com/repository/logistics-npm-private/"
+  },
   "scripts": {
     "tsc": "tsc",
     "clean": "rimraf dist",

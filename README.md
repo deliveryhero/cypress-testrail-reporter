@@ -1,7 +1,5 @@
-# TestRail Reporter for Cypress
+# TestRail Logistics Reporter for Cypress
 
-[![version](https://img.shields.io/npm/v/cypress-testrail-reporter.svg)](https://www.npmjs.com/package/cypress-testrail-reporter)
-[![downloads](https://img.shields.io/npm/dt/cypress-testrail-reporter.svg)](https://www.npmjs.com/package/cypress-testrail-reporter)
 [![MIT License](https://img.shields.io/github/license/Vivify-Ideas/cypress-testrail-reporter.svg)](https://github.com/Vivify-Ideas/cypress-testrail-reporter/blob/master/LICENSE.md)
 
 Publishes [Cypress](https://www.cypress.io/) runs on TestRail.
@@ -9,7 +7,7 @@ Publishes [Cypress](https://www.cypress.io/) runs on TestRail.
 ## Install
 
 ```shell
-$ npm install cypress-testrail-reporter --save-dev
+$ npm install @logistics/cypress-testrail-reporter --save-dev
 ```
 
 ## Usage
@@ -24,7 +22,9 @@ Add reporter to your `cypress.json`:
   "username": "username",
   "password": "password",
   "projectId": 1,
+  "milestoneId": 1,
   "suiteId": 1,
+  "createTestRun": true
 }
 ```
 
@@ -49,6 +49,8 @@ it("Can authenticate a valid userC123", ...
 **password**: _string_ password or the API key for the aforementioned user.
 
 **projectId**: _number_ project with which the tests are associated.
+
+**milestoneId**: _number_ milestone with which the tests are associated.
 
 **suiteId**: _number_ suite with which the tests are associated.
 
