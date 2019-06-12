@@ -22,10 +22,13 @@ export class CypressTestRailReporter extends reporters.Spec {
     this.validate(reporterOptions, 'suiteId');
 
     runner.on('start', () => {
-      const executionDateTime = moment().format('YYYY-MM-DD, HH:mm (Z)');
-      const name = `${executionDateTime} ${'Automated UI E2E Checks'}`;
-      const description = `Travis Build Number: ${process.env.TRAVIS_BUILD_NUMBER}`;
-      this.testRail.createRun(name, description);
+      const { TRAVIS_BUILD_NUMBER: buildNumber } = process.env;
+
+      if (buildNumber) {
+        const executionDateTime = moment().format('YYYY-MM-DD, HH:mm (Z)');
+        const name = `${executionDateTime} ${'Automated UI E2E Checks'}`;
+        this.testRail.createRun(name, `Travis Build Number: ${buildNumber}`);
+      }
     });
 
     runner.on('pass', test => {
@@ -35,7 +38,7 @@ export class CypressTestRailReporter extends reporters.Spec {
           return {
             case_id: caseId,
             status_id: Status.Passed,
-            comment: `Execution time: ${test.duration}ms`,
+            comment: `Execution time: ${test.duration}ms`
           };
         });
         this.results.push(...results);
@@ -49,7 +52,7 @@ export class CypressTestRailReporter extends reporters.Spec {
           return {
             case_id: caseId,
             status_id: Status.Failed,
-            comment: `${test.err.message}`,
+            comment: `${test.err.message}`
           };
         });
         this.results.push(...results);
@@ -78,7 +81,9 @@ export class CypressTestRailReporter extends reporters.Spec {
       throw new Error('Missing reporterOptions in cypress.json');
     }
     if (options[name] == null) {
-      throw new Error(`Missing ${name} value. Please update reporterOptions in cypress.json`);
+      throw new Error(
+        `Missing ${name} value. Please update reporterOptions in cypress.json`
+      );
     }
   }
 }
