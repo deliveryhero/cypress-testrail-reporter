@@ -26,7 +26,7 @@ export class CypressTestRailReporter extends reporters.Spec {
 
       if (buildNumber) {
         const executionDateTime = moment().format('YYYY-MM-DD, HH:mm (Z)');
-        const name = `${executionDateTime} ${'Automated UI E2E Checks'}`;
+        const name = `${executionDateTime} Automated UI E2E Checks`;
         this.testRail.createRun(name, `Travis Build Number: ${buildNumber}`);
       }
     });
