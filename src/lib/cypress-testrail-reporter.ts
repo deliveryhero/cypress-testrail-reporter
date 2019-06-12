@@ -12,68 +12,71 @@ export class CypressTestRailReporter extends reporters.Spec {
   constructor(runner: any, options: any) {
     super(runner);
 
-    let reporterOptions = options.reporterOptions;
-    this.testRail = new TestRail(reporterOptions);
-    this.validate(reporterOptions, 'domain');
-    this.validate(reporterOptions, 'username');
-    this.validate(reporterOptions, 'password');
-    this.validate(reporterOptions, 'projectId');
-    this.validate(reporterOptions, 'milestoneId');
-    this.validate(reporterOptions, 'suiteId');
+    const { TRAVIS_BUILD_NUMBER: buildNumber } = process.env;
 
-    runner.on('start', () => {
-      const { TRAVIS_BUILD_NUMBER: buildNumber } = process.env;
+    if (buildNumber) {
+      let reporterOptions = options.reporterOptions;
+      this.testRail = new TestRail(reporterOptions);
+      this.validate(reporterOptions, 'domain');
+      this.validate(reporterOptions, 'username');
+      this.validate(reporterOptions, 'password');
+      this.validate(reporterOptions, 'projectId');
+      this.validate(reporterOptions, 'milestoneId');
+      this.validate(reporterOptions, 'suiteId');
 
-      if (buildNumber) {
+      runner.on('start', () => {
         const executionDateTime = moment().format('YYYY-MM-DD, HH:mm (Z)');
         const name = `${executionDateTime} Automated UI E2E Checks`;
         this.testRail.createRun(name, `Travis Build Number: ${buildNumber}`);
-      }
-    });
+      });
 
-    runner.on('pass', test => {
-      const caseIds = titleToCaseIds(test.title);
-      if (caseIds.length > 0) {
-        const results = caseIds.map(caseId => {
-          return {
-            case_id: caseId,
-            status_id: Status.Passed,
-            comment: `Execution time: ${test.duration}ms`
-          };
-        });
-        this.results.push(...results);
-      }
-    });
+      runner.on('pass', test => {
+        const caseIds = titleToCaseIds(test.title);
+        if (caseIds.length > 0) {
+          const results = caseIds.map(caseId => {
+            return {
+              case_id: caseId,
+              status_id: Status.Passed,
+              comment: `Execution time: ${test.duration}ms`
+            };
+          });
+          this.results.push(...results);
+        }
+      });
 
-    runner.on('fail', test => {
-      const caseIds = titleToCaseIds(test.title);
-      if (caseIds.length > 0) {
-        const results = caseIds.map(caseId => {
-          return {
-            case_id: caseId,
-            status_id: Status.Failed,
-            comment: `${test.err.message}`
-          };
-        });
-        this.results.push(...results);
-      }
-    });
+      runner.on('fail', test => {
+        const caseIds = titleToCaseIds(test.title);
+        if (caseIds.length > 0) {
+          const results = caseIds.map(caseId => {
+            return {
+              case_id: caseId,
+              status_id: Status.Failed,
+              comment: `${test.err.message}`
+            };
+          });
+          this.results.push(...results);
+        }
+      });
 
-    runner.on('end', () => {
-      if (this.results.length == 0) {
-        console.log('\n', chalk.magenta.underline.bold('(TestRail Reporter)'));
-        console.warn(
-          '\n',
-          'No testcases were matched. Ensure that your tests are declared correctly and matches Cxxx',
-          '\n'
-        );
-        this.testRail.deleteRun();
+      runner.on('end', () => {
+        if (this.results.length == 0) {
+          console.log(
+            '\n',
+            chalk.magenta.underline.bold('(TestRail Reporter)')
+          );
+          console.warn(
+            '\n',
+            'No testcases were matched. Ensure that your tests are declared correctly and matches Cxxx',
+            '\n'
+          );
+          this.testRail.deleteRun();
 
-        return;
-      }
+          return;
+        }
 
-      this.testRail.publishResults(this.results);
-    });
+        this.testRail.publishResults(this.results);
+      });
+    }
   }
 
   private validate(options, name: string) {
