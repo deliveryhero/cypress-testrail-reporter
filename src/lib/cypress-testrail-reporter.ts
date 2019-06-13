@@ -74,7 +74,7 @@ export class CypressTestRailReporter extends reporters.Spec {
           return;
         }
 
-        this.testRail.publishResults(this.results);
+        // this.testRail.publishResults(this.results);
       });
     }
   }
