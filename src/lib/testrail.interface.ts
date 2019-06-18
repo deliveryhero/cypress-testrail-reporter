@@ -13,7 +13,7 @@ export enum Status {
   Blocked = 2,
   Untested = 3,
   Retest = 4,
-  Failed = 5,
+  Failed = 5
 }
 
 export interface TestRailResult {

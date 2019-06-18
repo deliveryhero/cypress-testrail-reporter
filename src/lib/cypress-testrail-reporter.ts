@@ -8,6 +8,8 @@ const chalk = require('chalk');
 export class CypressTestRailReporter extends reporters.Spec {
   private results: TestRailResult[] = [];
   private testRail: TestRail;
+  private name: string;
+  private description: string;
 
   constructor(runner: any, options: any) {
     super(runner);
@@ -16,6 +18,7 @@ export class CypressTestRailReporter extends reporters.Spec {
 
     if (buildNumber) {
       let reporterOptions = options.reporterOptions;
+
       this.testRail = new TestRail(reporterOptions);
       this.validate(reporterOptions, 'domain');
       this.validate(reporterOptions, 'username');
@@ -26,8 +29,10 @@ export class CypressTestRailReporter extends reporters.Spec {
 
       runner.on('start', () => {
         const executionDateTime = moment().format('YYYY-MM-DD, HH:mm (Z)');
-        const name = `${executionDateTime} Automated UI E2E Checks`;
-        this.testRail.createRun(name, `Travis Build Number: ${buildNumber}`);
+
+        this.name = `${executionDateTime} , TA UI E2E, Travis Build: #${buildNumber}`;
+        this.description = `Travis Build Number: ${buildNumber}`;
+        this.testRail.createRun(this.name, this.description);
       });
 
       runner.on('pass', test => {
@@ -69,12 +74,18 @@ export class CypressTestRailReporter extends reporters.Spec {
             'No testcases were matched. Ensure that your tests are declared correctly and matches Cxxx',
             '\n'
           );
+
           this.testRail.deleteRun();
+        } else {
+          const caseIds = this.results.map(item => item.case_id);
 
-          return;
+          this.testRail.updateRun(
+            this.name,
+            this.description,
+            caseIds,
+            this.results
+          );
         }
-
-        // this.testRail.publishResults(this.results);
       });
     }
   }
